@@ -1,6 +1,6 @@
-import React from 'react';
-import { MapPin, Building, Award } from 'lucide-react';
-import { Doctor } from '../types';
+import React from "react";
+import { MapPin, Building, Award } from "lucide-react";
+import { Doctor } from "../types";
 
 interface DoctorCardProps {
   doctor: Doctor;
@@ -8,61 +8,89 @@ interface DoctorCardProps {
 
 const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
   return (
-    <div data-testid="doctor-card" className="bg-white rounded-lg shadow-md p-6 mb-4 transition-all hover:shadow-lg">
-      <div className="flex flex-col md:flex-row md:items-start gap-4">
+    <div
+      data-testid="doctor-card"
+      className="bg-white/90 backdrop-blur-md border border-gray-200 rounded-2xl shadow-xl transition-all hover:shadow-2xl hover:scale-[1.01] duration-300 p-6 group"
+    >
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* Profile Image */}
         <div className="flex-shrink-0">
-          <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <img 
-              src={`https://picsum.photos/seed/${doctor.id}/200`} 
-              alt={doctor.name} 
+          <div className="relative w-24 h-24 rounded-full border-4 border-blue-500 overflow-hidden shadow-lg">
+            <img
+              src={`https://picsum.photos/seed/${doctor.id}/200`}
+              alt={doctor.name}
               className="w-full h-full object-cover"
             />
           </div>
         </div>
 
+        {/* Doctor Details */}
         <div className="flex-grow">
-          <h2 data-testid="doctor-name" className="text-xl font-semibold text-gray-800">{doctor.name}</h2>
-          
-          <div data-testid="doctor-specialty" className="mt-1 text-gray-600">
-            {Array.isArray(doctor.specialty) ? doctor.specialty.join(', ') : ''}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+            <div>
+              <h2
+                data-testid="doctor-name"
+                className="text-2xl font-bold text-gray-800 group-hover:text-blue-700 transition-colors"
+              >
+                {doctor.name}
+              </h2>
+              <p className="text-sm text-gray-500 mt-1 tracking-wide">
+                {Array.isArray(doctor.specialty)
+                  ? doctor.specialty.join(", ")
+                  : ""}
+              </p>
+              {doctor.qualification && (
+                <p className="text-sm text-gray-400 mt-1 italic">
+                  {doctor.qualification}
+                </p>
+              )}
+            </div>
+            <div
+              data-testid="doctor-fee"
+              className="mt-3 sm:mt-0 text-lg font-semibold text-blue-600"
+            >
+              ₹{doctor.fees}
+            </div>
           </div>
-          
-          <div className="mt-2 text-sm text-gray-500">{doctor.qualification}</div>
-          
-          <div data-testid="doctor-experience" className="mt-2 flex items-center text-gray-700">
-            <Award className="inline mr-1 h-4 w-4" />
-            <span>{doctor.experience} yrs exp.</span>
+
+          {/* Experience */}
+          <div className="mt-3 flex items-center gap-2 text-sm text-gray-700">
+            <Award className="w-4 h-4 text-yellow-500" />
+            <span>{doctor.experience} yrs experience</span>
           </div>
-          
-          <div className="mt-3 flex flex-wrap gap-2">
-            {Array.isArray(doctor.consultationType) && doctor.consultationType.map((type, index) => (
-              <span 
-                key={index} 
-                className={`text-xs px-2 py-1 rounded ${
-                  type === 'Video Consult' 
-                    ? 'bg-blue-100 text-blue-800' 
-                    : 'bg-green-100 text-green-800'
+
+          {/* Consultation Type Badges */}
+          <div className="mt-4 flex flex-wrap gap-3">
+            {doctor.consultationType?.map((type, index) => (
+              <span
+                key={index}
+                className={`px-3 py-1 text-xs font-medium rounded-full shadow-sm border ${
+                  type === "Video Consult"
+                    ? "bg-blue-50 text-blue-700 border-blue-200"
+                    : "bg-green-50 text-green-700 border-green-200"
                 }`}
               >
                 {type}
               </span>
             ))}
           </div>
-          
-          <div className="mt-3 flex items-center text-gray-600">
-            <Building className="inline mr-1 h-4 w-4" />
-            <span>{doctor.clinicName}</span>
-          </div>
-          
-          <div className="mt-1 flex items-center text-gray-600">
-            <MapPin className="inline mr-1 h-4 w-4" />
-            <span>{doctor.location}</span>
+
+          {/* Clinic & Location */}
+          <div className="mt-4 text-sm text-gray-600 space-y-1">
+            <div className="flex items-center gap-2">
+              <Building className="w-4 h-4 text-gray-400" />
+              <span>{doctor.clinicName}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-gray-400" />
+              <span>{doctor.location}</span>
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-col items-end mt-4 md:mt-0">
-          <div data-testid="doctor-fee" className="text-lg font-semibold">₹{doctor.fees}</div>
-          <button className="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors">
+        {/* Appointment Button */}
+        <div className="flex md:flex-col items-end justify-between mt-4 md:mt-0 gap-2 md:gap-4">
+          <button className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold px-6 py-2 rounded-xl text-sm shadow-lg transition duration-200">
             Book Appointment
           </button>
         </div>
